@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Welcome to BabyNest{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="text-center py-5" style="background-color: #FFF0F5;">
+  <div class="container">
+    <h1 class="mb-3 fw-bold">Welcome to BabyNest 👶</h1>
+    <p class="lead mb-4">Find meaningful names with love, culture, and tradition.</p>
+    <img src="{% static 'images/baby-hero.jpg' %}" class="img" style="max-height: 250px;" alt="Happy Baby">
+    <div class="mt-4">
+      <a href="{% url 'name_list' %}" class="btn btn-lg btn-primary rounded-pill">🔍 Explore Baby Names</a>
+    </div>
+  </div>
+</section>
+
+<!-- Trending Names -->
+<section class="py-5 bg-white">
+  <div class="container">
+    <h2 class="mb-4 text-center">🌟 Trending Names</h2>
+    <div class="row">
+      {% for name in trending_names %}
+        <div class="col-md-4 col-lg-3 mb-4">
+          <div class="card border-0 shadow-sm rounded">
+            {% if name.image %}
+              <img src="{{ name.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="{{ name.name }}">
+            {% else %}
+              <img src="{% static 'images/default-baby.jpg' %}" class="card-img-top" style="height: 200px; object-fit: cover;">
+            {% endif %}
+            <div class="card-body text-center">
+              <h5 class="card-title">{{ name.name }}</h5>
+              <p class="text-muted">{{ name.gender }}</p>
+              <a href="{% url 'name_detail' name.slug %}" class="btn btn-outline-secondary btn-sm rounded-pill">See Meaning</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Explore By Category -->
+<section class="py-5" style="background-color: #F0F8FF;">
+  <div class="container text-center">
+    <h2 class="mb-4">📘 Explore By Category</h2>
+    <div class="d-flex flex-wrap justify-content-center gap-2">
+      <a href="http://127.0.0.1:8000/names/?q=&gender=&starts_with=&religion=Islam" class="btn btn-outline-warning rounded-pill">Muslim</a>
+      <a href="http://127.0.0.1:8000/names/?q=&gender=&starts_with=&religion=Hinduism" class="btn btn-outline-primary rounded-pill">Hindu</a>
+      <a href="http://127.0.0.1:8000/names/?q=&gender=&starts_with=&religion=Christianity" class="btn btn-outline-info rounded-pill">Christian</a>
+      <a href="#" class="btn btn-outline-success rounded-pill">Sikh</a>
+      <a href="#" class="btn btn-outline-dark rounded-pill">Unique</a>
+      <a href="#" class="btn btn-outline-secondary rounded-pill">Nature-Inspired</a>
+      <a href="#" class="btn btn-outline-danger rounded-pill">Mythology</a>
+      <a href="#" class="btn btn-outline-secondary rounded-pill">A–Z</a>
+    </div>
+  </div>
+</section>
+
+<!-- Why Parents Love BabyNest -->
+<section class="py-5">
+  <div class="container text-center">
+    <h2 class="mb-4">❤️ Why Parents Love BabyNest</h2>
+    <div class="row">
+      <div class="col-md-3 mb-3">
+        <div class="card p-3 border-0 shadow rounded">
+          <div class="h3">✅</div>
+          <h6>Verified Meanings</h6>
+          <p class="text-muted">Each name has culturally accurate and meaningful descriptions.</p>
+        </div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <div class="card p-3 border-0 shadow rounded">
+          <div class="h3">🔢</div>
+          <h6>Numerology & Rashi</h6>
+          <p class="text-muted">Know what numbers and stars say about the name.</p>
+        </div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <div class="card p-3 border-0 shadow rounded">
+          <div class="h3">📸</div>
+          <h6>Baby Name Cards</h6>
+          <p class="text-muted">Names shown with adorable baby images for inspiration.</p>
+        </div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <div class="card p-3 border-0 shadow rounded">
+          <div class="h3">🔍</div>
+          <h6>Smart Filters</h6>
+          <p class="text-muted">Search by gender, religion, and name starting letters.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section class="py-5 bg-light">
+  <div class="container text-center">
+    <h2 class="mb-5">🗣️ What Parents Say</h2>
+    <div class="row">
+      <div class="col-md-4">
+        <blockquote class="blockquote">
+          <p>"I found the perfect name for my baby! So meaningful and easy!"</p>
+          <footer class="blockquote-footer">Ayesha K.</footer>
+        </blockquote>
+      </div>
+      <div class="col-md-4">
+        <blockquote class="blockquote">
+          <p>"Love the soft design. It felt like the site was made for my baby!"</p>
+          <footer class="blockquote-footer">Ravi & Pooja</footer>
+        </blockquote>
+      </div>
+      <div class="col-md-4">
+        <blockquote class="blockquote">
+          <p>"The name generator is amazing! We got a beautiful name with deep meaning."</p>
+          <footer class="blockquote-footer">Sara & Imran</footer>
+        </blockquote>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

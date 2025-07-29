@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<style>
+    .blog-wrapper {
+        background: #fff;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        margin-top: 40px;
+        margin-bottom: 40px;
+    }
+
+    .blog-content h2, .blog-content h3 {
+        font-weight: bold;
+        margin-top: 30px;
+    }
+
+    .blog-content p {
+        line-height: 1.8;
+        margin-bottom: 20px;
+        font-size: 18px;
+    }
+
+    .main-image {
+        width: 100%;
+        max-height: 450px;
+        object-fit: cover;
+        border-radius: 10px;
+        margin-bottom: 25px;
+    }
+
+    .blog-meta {
+        color: #888;
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+
+    .like-share {
+        margin-top: 30px;
+    }
+
+    .like-share button {
+        border: none;
+        background-color: #fce6e6;
+        color: #d80027;
+        padding: 10px 16px;
+        border-radius: 8px;
+        margin-right: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s ease;
+    }
+
+    .like-share button:hover {
+        background-color: #ffd5d5;
+    }
+
+    .comments {
+        margin-top: 50px;
+    }
+
+    .comments h4 {
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .comment-box {
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+    }
+
+    .comment-form textarea {
+        width: 100%;
+        height: 100px;
+        resize: none;
+        padding: 10px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
+
+    .comment-form button {
+        margin-top: 10px;
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        transition: 0.3s ease;
+    }
+
+    .comment-form button:hover {
+        background-color: #0056b3;
+    }
+
+    .related-posts {
+        margin-top: 60px;
+    }
+
+    .related-posts h4 {
+        margin-bottom: 20px;
+        font-weight: bold;
+    }
+
+    .related-posts .card {
+        margin-bottom: 20px;
+    }
+
+</style>
+
+<div class="container">
+    <div class="blog-wrapper">
+        <h1 class="mb-3">{{ post.title }}</h1>
+        <p class="blog-meta">
+            By <strong>{{ post.author }}</strong> | {{ post.date|date:"F j, Y" }} | Category: {{ post.category }}
+        </p>
+
+        {% if post.image %}
+            <img src="{{ post.image.url }}" alt="{{ post.title }}" class="main-image">
+        {% endif %}
+
+        <div class="blog-content">
+            {{ post.content|safe }}
+        </div>
+
+        <div class="like-share">
+            <button>❤️ Like</button>
+            <button onclick="navigator.share ? navigator.share({title: '{{ post.title }}', url: window.location.href}) : alert('Sharing not supported')">🔗 Share</button>
+        </div>
+
+        <div class="comments">
+            <h4>Comments</h4>
+
+            <!-- Static demo comments -->
+            <div class="comment-box">
+                <strong>Ayesha</strong><br>
+                I absolutely loved this post! 😊
+            </div>
+            <div class="comment-box">
+                <strong>Mohammad</strong><br>
+                So helpful and beautifully written!
+            </div>
+
+            <!-- Add comment form -->
+            <div class="comment-form">
+                <textarea placeholder="Leave your comment here..."></textarea>
+                <button>Submit</button>
+            </div>
+        </div>
+
+        <div class="related-posts">
+            <h4>Related Posts</h4>
+            <div class="row">
+                {% for related in related_posts %}
+                    <div class="col-md-4">
+                        <div class="card">
+                            {% if related.image %}
+                                <img src="{{ related.image.url }}" class="card-img-top" alt="{{ related.title }}">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ related.title }}</h5>
+                                <a href="{% url 'blog_detail' related.slug %}" class="btn btn-sm btn-outline-primary">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>No related posts found.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

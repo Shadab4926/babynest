@@ -1,0 +1,21 @@
+/* blog/static/blog/css/blog.css */
+
+.card-title {
+  font-weight: 600;
+  color: #333;
+}
+
+.card-img-top {
+  object-fit: cover;
+  height: 200px;
+}
+
+.subscribe-section input,
+.subscribe-section button {
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.badge {
+  font-size: 0.75rem;
+  font-weight: 500;
+}

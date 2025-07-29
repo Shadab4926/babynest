@@ -1,0 +1,8 @@
+{% extends "admin/change_list.html" %}
+
+{% block object-tools-items %}
+  {{ block.super }}
+  <li>
+    <a href="{% url 'admin:babyname_upload_csv' %}" class="addlink">📤 Upload CSV</a>
+  </li>
+{% endblock %}

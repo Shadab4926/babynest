@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>PDF</title>
+</head>
+<body>
+    <h1>Baby Vaccine Schedule</h1>
+    <p>Date of Birth: {{ dob }}</p>
+    <table border="1">
+        <tr>
+            <th>Vaccine</th>
+            <th>Age</th>
+            <th>Date</th>
+        </tr>
+        {% for vaccine in schedule %}
+        <tr>
+            <td>{{ vaccine.name }}</td>
+            <td>{{ vaccine.age_label }}</td>
+            <td>{{ vaccine.date }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

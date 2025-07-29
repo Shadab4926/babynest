@@ -1,0 +1,125 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm sticky-top">
+  <div class="container">
+    <!-- Brand Logo -->
+    <a class="navbar-brand fw-bold d-flex align-items-center" href="{% url 'home' %}">
+      <i class="fas fa-baby me-2"></i>
+      <span class="gradient-text">BabyNest</span>
+    </a>
+
+    <!-- Right Buttons (Search + Theme + User) -->
+    <div class="d-flex align-items-center order-lg-3 ms-auto">
+      <!-- Search Toggle (Mobile) -->
+      <button class="btn btn-link text-white d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#searchCollapse">
+        <i class="fas fa-search"></i>
+      </button>
+
+      <!-- Theme Toggle -->
+      <button id="theme-toggle" class="btn btn-link text-white">
+        <i class="fas fa-moon"></i>
+      </button>
+
+      <!-- User Dropdown -->
+      <div class="dropdown">
+        <a href="#" class="btn btn-outline-light rounded-pill px-3 ms-2 dropdown-toggle" data-bs-toggle="dropdown">
+          <i class="fas fa-user me-1"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="#"><i class="fas fa-heart me-2"></i> Favorites</a></li>
+          <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> Profile</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="#"><i class="fas fa-sign-in-alt me-2"></i> Login</a></li>
+        </ul>
+      </div>
+
+      <!-- Mobile Menu Toggle -->
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbar">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+
+    <!-- Desktop Search Bar -->
+    <div class="d-none d-lg-block ms-3 flex-grow-1">
+      <form class="d-flex" method="GET" action="{% url 'name_list' %}">
+        <div class="input-group">
+          <input class="form-control rounded-pill-start" name="q" type="search" placeholder="Search names..." aria-label="Search">
+          <button class="btn btn-light rounded-pill-end" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Mobile Search -->
+    <div class="collapse w-100 order-1 order-lg-2" id="searchCollapse">
+      <form class="px-3 py-2" method="GET" action="{% url 'name_list' %}">
+        <div class="input-group">
+          <input class="form-control" name="q" type="search" placeholder="Search names..." aria-label="Search">
+          <button class="btn btn-light" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Navbar Links -->
+    <div class="collapse navbar-collapse order-2 order-lg-1" id="navbar">
+      <ul class="navbar-nav mx-auto">
+
+        <!-- Baby Names Dropdown -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+            <i class="fas fa-list me-1 d-lg-none"></i> Baby Names
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/names/"><i class="fas fa-list me-2"></i> All Names</a></li>
+            <li><a class="dropdown-item" href="/names/?gender=Girl"><i class="fas fa-venus me-2"></i> Girl Names</a></li>
+            <li><a class="dropdown-item" href="/names/?gender=Boys"><i class="fas fa-mars me-2"></i> Boy Names</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/names/?popular=true"><i class="fas fa-fire me-2"></i> Popular</a></li>
+
+          </ul>
+        </li>
+
+        <!-- Name Generator -->
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'advanced_name_generator' %}">
+            <i class="fas fa-random me-1 d-lg-none"></i> Name Generator
+          </a>
+        </li>
+
+        <!-- Resources -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+            <i class="fas fa-info-circle me-1 d-lg-none"></i> Resources
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/blog/"><i class="fas fa-newspaper me-2"></i> Blog</a></li>
+            <li><a class="dropdown-item" href="/products/"><i class="fas fa-shopping-bag me-2"></i> Products</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/guides/"><i class="fas fa-book me-2"></i> Naming Guides</a></li>
+          </ul>
+        </li>
+
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" id="parentingToolsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Parenting Tools
+  </a>
+  <ul class="dropdown-menu" aria-labelledby="parentingToolsDropdown">
+    <li><a class="dropdown-item" href="{% url 'tools:due_date_calculator' %}">Due Date Calculator</a></li>
+    <li><a class="dropdown-item" href="{% url 'tools:newborn_checklist' %}">Newborn Essentials Checklist</a></li>
+    <li><a class="dropdown-item" href="{% url 'tools:baby_vaccine_reminder' %}">Baby Vaccine Reminder</a></li>
+  </ul>
+</li>
+
+
+        <!-- Contact -->
+        <li class="nav-item">
+          <a class="nav-link" href="/contact/">
+            <i class="fas fa-envelope me-1 d-lg-none"></i> Contact
+          </a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>

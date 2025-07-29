@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}👶 Advanced Baby Name Generator{% endblock %}
+
+{% block content %}
+<div class="container py-5" style="background-color: #fefcfb; border-radius: 1rem;">
+  <h2 class="text-center mb-4" style="color: #5f4b8b;">✨ Find Your Baby’s Perfect Name</h2>
+
+  <!-- Filter Form -->
+  <form method="get" class="row g-3 justify-content-center mb-4 px-3">
+    <div class="col-md-3">
+      <select name="gender" class="form-select" style="border-radius: 20px;">
+        <option value="">👦👧 Select Gender</option>
+        <option value="Boy" {% if request.GET.gender == "Boy" %}selected{% endif %}>Boy</option>
+        <option value="Girl" {% if request.GET.gender == "Girl" %}selected{% endif %}>Girl</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <select name="starts_with" class="form-select" style="border-radius: 20px;">
+        <option value="">🔤 Starting Letter</option>
+        {% for letter in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" %}
+          <option value="{{ letter }}" {% if request.GET.starts_with == letter %}selected{% endif %}>{{ letter }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-3">
+      <select name="religion" class="form-select" style="border-radius: 20px;">
+        <option value="">🙏 Religion</option>
+        <option value="Islam" {% if request.GET.religion == "Islam" %}selected{% endif %}>Islam</option>
+        <option value="Hinduism" {% if request.GET.religion == "Hinduism" %}selected{% endif %}>Hinduism</option>
+        <option value="Christianity" {% if request.GET.religion == "Christianity" %}selected{% endif %}>Christianity</option>
+        <option value="Sikhism" {% if request.GET.religion == "Sikhism" %}selected{% endif %}>Sikhism</option>
+        <option value="Buddhism" {% if request.GET.religion == "Buddhism" %}selected{% endif %}>Buddhism</option>
+        <option value="Other" {% if request.GET.religion == "Other" %}selected{% endif %}>Other</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <button type="submit" class="btn w-100" style="background-color: #ffc0cb; color: white; border-radius: 30px;">
+        🔍 Generate
+      </button>
+    </div>
+  </form>
+
+  {% if names %}
+    <p class="text-center text-muted mb-4">Showing {{ names.paginator.count }} name{{ names.paginator.count|pluralize }}</p>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+      {% for name in names %}
+        <div class="col">
+          <div class="card h-100 shadow-sm border-0" style="border-radius: 1rem; background-color: #fff8f5;">
+            {% if name.image %}
+              <img src="{{ name.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover; border-top-left-radius: 1rem; border-top-right-radius: 1rem;">
+            {% else %}
+              <div class="text-center py-4" style="height: 200px; background-color: #f8e8e8; border-top-left-radius: 1rem; border-top-right-radius: 1rem;">
+                <i class="fas fa-baby fa-3x text-secondary"></i>
+              </div>
+            {% endif %}
+            <div class="card-body text-center">
+              <h5 class="card-title" style="color: #5f4b8b;">{{ name.name }}</h5>
+              <p class="text-muted small">{{ name.meaning|truncatechars:90 }}</p>
+              <div class="mb-3">
+                <span class="badge rounded-pill bg-primary-subtle text-dark px-3">{{ name.gender }}</span>
+                <span class="badge rounded-pill bg-success-subtle text-dark px-3">{{ name.origin|default:'N/A' }}</span>
+              </div>
+              <a href="{% url 'name_detail' name.slug %}" class="btn btn-sm" style="background-color: #ffb3c6; color: white; border-radius: 30px;">Details</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    <div class="mt-4">
+      {% include 'pagination.html' with page_obj=names %}
+    </div>
+  {% elif request.GET %}
+    <div class="alert alert-warning text-center mt-4">
+      <i class="fas fa-baby fa-3x mb-2" style="color: #ffa7a7;"></i>
+      <h4>No names found</h4>
+      <p>Try different filters to discover beautiful names!</p>
+      <a href="{% url 'advanced_generator' %}" class="btn btn-sm mt-2" style="background-color: #ffc0cb; color: white; border-radius: 30px;">Clear Filters</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,95 @@
+/* General Reset and Typography */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #FFF8F0;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3, h4 {
+    color: #333;
+    font-weight: 600;
+}
+
+a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+a:hover {
+    color: #0056b3;
+}
+
+/* Card & Form Styling */
+.card {
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.form-label {
+    color: #444;
+}
+
+input[type="date"],
+input[type="text"],
+select {
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #FF69B4;
+    border-color: #FF69B4;
+    border-radius: 30px;
+    padding: 10px 20px;
+}
+
+.btn-primary:hover {
+    background-color: #e0559d;
+    border-color: #e0559d;
+}
+
+.btn-outline-success {
+    border-radius: 30px;
+    padding: 6px 15px;
+}
+
+/* Table */
+.table th,
+.table td {
+    vertical-align: middle !important;
+    font-size: 0.95rem;
+}
+
+.table-warning {
+    background-color: #fff8dc;
+}
+
+/* Page Backgrounds */
+.bg-light {
+    background-color: #fdfdfd !important;
+}
+
+.bg-white {
+    background-color: #ffffff !important;
+}
+
+/* Spacing */
+.mt-3, .my-3 {
+    margin-top: 1rem !important;
+}
+
+.mt-5 {
+    margin-top: 3rem !important;
+}
+
+/* Headings with Emoji */
+h2.text-center {
+    font-size: 2rem;
+    color: #444;
+}

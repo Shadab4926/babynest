@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Baby Name Generator Results{% endblock %}
+
+{% block content %}
+<div class="container py-5" style="background-color: #FFF8F0; border-radius: 1.5rem;">
+  <h2 class="text-center mb-4">🎉 Baby Name Generator Results</h2>
+
+  <!-- Keep the filter form at the top of results -->
+  <form method="get" class="row g-3 justify-content-center mb-4">
+    <div class="col-md-3">
+      <select name="gender" class="form-select">
+        <option value="">Select Gender</option>
+        <option value="Boy" {% if request.GET.gender == "Boy" %}selected{% endif %}>Boy</option>
+        <option value="Girl" {% if request.GET.gender == "Girl" %}selected{% endif %}>Girl</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <select name="starts_with" class="form-select">
+        <option value="">Starting Letter</option>
+        {% for letter in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" %}
+          <option value="{{ letter }}" {% if request.GET.starts_with == letter %}selected{% endif %}>{{ letter }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-3">
+      <select name="religion" class="form-select">
+        <option value="">Any Religion</option>
+        <option value="Islam" {% if request.GET.religion == "Islam" %}selected{% endif %}>Islam</option>
+        <option value="Hinduism" {% if request.GET.religion == "Hinduism" %}selected{% endif %}>Hinduism</option>
+        <option value="Christianity" {% if request.GET.religion == "Christianity" %}selected{% endif %}>Christianity</option>
+        <option value="Sikhism" {% if request.GET.religion == "Sikhism" %}selected{% endif %}>Sikhism</option>
+        <option value="Buddhism" {% if request.GET.religion == "Buddhism" %}selected{% endif %}>Buddhism</option>
+        <option value="Other" {% if request.GET.religion == "Other" %}selected{% endif %}>Other</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <button type="submit" class="btn w-100" style="background-color: #FF69B4; color: white; border-radius: 30px;">
+        🔍 Generate
+      </button>
+    </div>
+  </form>
+
+  {% if names %}
+    <div class="alert alert-success text-center">
+      Found {{ names|length }} name{{ names|pluralize }}
+    </div>
+    
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      {% for name in names %}
+        <div class="col">
+          <div class="card shadow-sm border-0 h-100" style="border-radius: 1rem;">
+            {% if name.image %}
+              <img src="{{ name.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+            {% else %}
+              <div class="text-center py-4" style="height: 200px; background-color: #f0f8ff;">
+                <i class="fas fa-baby fa-3x" style="color: #FF69B4;"></i>
+              </div>
+            {% endif %}
+            <div class="card-body text-center">
+              <h5 class="card-title">{{ name.name }}</h5>
+              <p class="text-muted">{{ name.meaning|truncatechars:80 }}</p>
+              <div class="d-flex justify-content-center gap-2 mb-3">
+                <span class="badge bg-info">{{ name.gender }}</span>
+                <span class="badge bg-secondary">{{ name.origin }}</span>
+              </div>
+              <a href="{% url 'name_detail' name.slug %}" class="btn btn-sm" 
+                 style="background-color: #FF69B4; color: white; border-radius: 30px;">
+                Details
+              </a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    
+    <!-- Pagination -->
+    {% if names.has_other_pages %}
+    <nav aria-label="Page navigation" class="mt-4">
+      <ul class="pagination justify-content-center">
+        {% if names.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page=1&amp;gender={{ request.GET.gender }}&amp;starts_with={{ request.GET.starts_with }}&amp;religion={{ request.GET.religion }}">First</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="?page={{ names.previous_page_number }}&amp;gender={{ request.GET.gender }}&amp;starts_with={{ request.GET.starts_with }}&amp;religion={{ request.GET.religion }}">Previous</a>
+          </li>
+        {% endif %}
+        
+        {% for i in names.paginator.page_range %}
+          {% if names.number == i %}
+            <li class="page-item active"><a class="page-link" href="#">{{ i }}</a></li>
+          {% else %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ i }}&amp;gender={{ request.GET.gender }}&amp;starts_with={{ request.GET.starts_with }}&amp;religion={{ request.GET.religion }}">{{ i }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+        
+        {% if names.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ names.next_page_number }}&amp;gender={{ request.GET.gender }}&amp;starts_with={{ request.GET.starts_with }}&amp;religion={{ request.GET.religion }}">Next</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="?page={{ names.paginator.num_pages }}&amp;gender={{ request.GET.gender }}&amp;starts_with={{ request.GET.starts_with }}&amp;religion={{ request.GET.religion }}">Last</a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
+    
+  {% elif request.GET %}
+    <div class="alert alert-warning text-center py-4">
+      <i class="fas fa-baby fa-3x mb-3" style="color: #FF69B4;"></i>
+      <h4>No names found</h4>
+      <p>Try different filters to discover beautiful names!</p>
+      <a href="{% url 'name_generator' %}" class="btn mt-2" style="background-color: #FF69B4; color: white; border-radius: 30px;">
+        Clear Filters
+      </a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

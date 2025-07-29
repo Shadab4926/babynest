@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Due Date Calculator | BabyNest{% endblock %}
+
+{% block content %}
+<section class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-lg rounded-4 border-0">
+        <div class="card-body p-5">
+          <h2 class="text-center mb-4 text-primary">🍼 Due Date Calculator</h2>
+          <form method="post" id="due-date-form">
+            {% csrf_token %}
+            <div class="mb-4">
+              <label for="lmp" class="form-label fw-semibold">Last Menstrual Period (LMP)</label>
+              <input type="date" id="lmp" name="lmp" class="form-control form-control-lg rounded-3" required>
+            </div>
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-primary btn-lg rounded-pill">Calculate Due Date</button>
+            </div>
+          </form>
+
+          {% if due_date %}
+          <div class="mt-5 text-center">
+            <h4 class="text-success">🎉 Your estimated due date is:</h4>
+            <h2 class="fw-bold">{{ due_date }}</h2>
+            <p class="mt-3 text-muted">You are currently in <strong>{{ current_week }}</strong> week ({{ trimester }})</p>
+          </div>
+
+          <div class="timeline mt-5">
+            <h5 class="text-center text-secondary mb-4">Pregnancy Timeline</h5>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+              <div class="col">
+                <div class="card h-100 bg-light border-0 text-center">
+                  <div class="card-body">
+                    <h5 class="card-title">First Trimester</h5>
+                    <p class="card-text">Weeks 1 - 12</p>
+                    <img src="{% static 'images/trimester1.png' %}" class="img-fluid" style="max-height: 100px;">
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="card h-100 bg-light border-0 text-center">
+                  <div class="card-body">
+                    <h5 class="card-title">Second Trimester</h5>
+                    <p class="card-text">Weeks 13 - 27</p>
+                    <img src="{% static 'images/trimester2.png' %}" class="img-fluid" style="max-height: 100px;">
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="card h-100 bg-light border-0 text-center">
+                  <div class="card-body">
+                    <h5 class="card-title">Third Trimester</h5>
+                    <p class="card-text">Weeks 28 - Birth</p>
+                    <img src="{% static 'images/trimester3.png' %}" class="img-fluid" style="max-height: 100px;">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

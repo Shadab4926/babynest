@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Baby Vaccine Schedule</title>
+    <style>
+        body {
+            font-family: Arial;
+            font-size: 12px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px;
+        }
+        td {
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h2>Baby Vaccine Schedule</h2>
+    <p><strong>Date of Birth:</strong> {{ dob }}</p>
+    <p><strong>Report Date:</strong> {{ current_date }}</p>
+    <p><strong>Total Vaccines:</strong> {{ total_vaccines }} |
+       <strong>Completed:</strong> {{ completed }} |
+       <strong>Pending:</strong> {{ pending }}</p>
+
+    <table>
+        <tr>
+            <th>Vaccine</th>
+            <th>Age</th>
+            <th>Date</th>
+            <th>Status</th>
+        </tr>
+        {% for item in schedule %}
+        <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.age_label }}</td>
+            <td>{{ item.date|date:"M d, Y" }}</td>
+            <td>{{ item.status|title }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

@@ -1,0 +1,30 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<div class="container">
+  <h1>📤 Upload Baby Names CSV</h1>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div>
+      <label for="csv_file">Choose CSV File:</label>
+      <input type="file" name="csv_file" required>
+    </div>
+    <button type="submit" class="default btn btn-primary mt-2">Upload</button>
+  </form>
+
+  <p class="mt-3">
+    Make sure your CSV has these columns: <br>
+    <strong>name, gender, meaning, religion, origin, popularity</strong>
+  </p>
+
+  <a href="..">⬅ Back to Admin</a>
+</div>
+{% endblock %}
+

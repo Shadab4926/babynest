@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Newborn Essentials Checklist | BabyNest{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-light">
+  <div class="container">
+    <h2 class="text-center mb-4">📝 Newborn Essentials Checklist</h2>
+    <p class="text-center mb-4">Get a personalized checklist for your baby's needs by selecting a few preferences below.</p>
+    
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <form method="POST" action="{% url 'tools:newborn_checklist' %}" class="card p-4 shadow-sm bg-white">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="age_range" class="form-label fw-semibold">Baby Age</label>
+            <select class="form-select" name="age_range" id="age_range" required>
+              <option value="">Select age range</option>
+              <option value="0-3">0–3 months</option>
+              <option value="3-6">3–6 months</option>
+              <option value="6-12">6–12 months</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="season" class="form-label fw-semibold">Season</label>
+            <select class="form-select" name="season" id="season" required>
+              <option value="">Choose season</option>
+              <option value="summer">Summer</option>
+              <option value="winter">Winter</option>
+              <option value="all">All Seasons</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Preferences</label><br>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" name="preferences" value="budget">
+              <label class="form-check-label">Budget Friendly</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" name="preferences" value="travel">
+              <label class="form-check-label">Travel Essentials</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" name="preferences" value="organic">
+              <label class="form-check-label">Organic Products</label>
+            </div>
+          </div>
+
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary px-4">Generate Checklist</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    {% if checklist %}
+      <div class="mt-5">
+        <h4 class="mb-3">🧾 Your Checklist:</h4>
+        <ul class="list-group shadow-sm">
+          {% for item in checklist %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              {{ item }}
+              <span class="badge bg-success">✔</span>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

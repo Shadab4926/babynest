@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}BabyNest - Beautiful Baby Names{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% load static %}
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome (for icons) -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+  <style>
+    body {
+      background-color: #FFF8F0;
+      font-family: 'Segoe UI', sans-serif;
+      color: #444;
+    }
+    .navbar {
+      background-color: #FFD1DC;
+    }
+    .navbar-brand, .nav-link {
+      color: #444 !important;
+      font-weight: 600;
+    }
+    .dropdown-menu a {
+      color: #444 !important;
+    }
+    footer {
+      background-color: #A7D7C5;
+      padding: 2rem;
+      color: #333;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<nav class="navbar navbar-expand-lg shadow-sm sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <i class="fas fa-baby me-2"></i> BabyNest
+    </a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav ms-auto">
+
+       <!-- Dropdown for Baby Names -->
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" id="babyNamesDropdown" role="button" data-bs-toggle="dropdown">
+    <i class="fas fa-list d-lg-none me-1"></i> Baby Names
+  </a>
+  <ul class="dropdown-menu" aria-labelledby="babyNamesDropdown">
+    <li>
+      <a class="dropdown-item" href="{% url 'name_list' %}">
+        <i class="fas fa-list me-2"></i> All Names
+      </a>
+    </li>
+    <li>
+      <a class="dropdown-item" href="{% url 'name_list' %}?gender=Girl">
+        <i class="fas fa-venus me-2"></i> Girl Names
+      </a>
+    </li>
+    <li>
+      <a class="dropdown-item" href="{% url 'name_list' %}?gender=Boy">
+        <i class="fas fa-mars me-2"></i> Boy Names
+      </a>
+    </li>
+    <li><hr class="dropdown-divider"></li>
+    <li>
+      <a class="dropdown-item" href="{% url 'name_list' %}?popular=true">
+        <i class="fas fa-fire me-2"></i> Popular
+      </a>
+    </li>
+  </ul>
+</li>
+
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'advanced_name_generator' %}">
+            <i class="fas fa-random d-lg-none me-1"></i> Name Generator
+          </a>
+        </li>
+
+        <!-- Dropdown for Resources -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="resourcesDropdown" role="button" data-bs-toggle="dropdown">
+            <i class="fas fa-info-circle d-lg-none me-1"></i> Resources
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="resourcesDropdown">
+            <li><a class="dropdown-item" href="/blog/"><i class="fas fa-newspaper me-2"></i> Blog</a></li>
+            <li><a class="dropdown-item" href="/products/"><i class="fas fa-shopping-bag me-2"></i> Products</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/guides/"><i class="fas fa-book me-2"></i> Naming Guides</a></li>
+          </ul>
+        </li>
+
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" id="parentingToolsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Parenting Tools
+  </a>
+  <ul class="dropdown-menu" aria-labelledby="parentingToolsDropdown">
+    <li><a class="dropdown-item" href="{% url 'tools:due_date_calculator' %}">Due Date Calculator</a></li>
+    <li><a class="dropdown-item" href="{% url 'tools:newborn_checklist' %}">Newborn Essentials Checklist</a></li>
+    <li><a class="dropdown-item" href="{% url 'tools:vaccine_reminder' %}">Baby Vaccine Reminder</a></li>
+  </ul>
+</li>
+
+
+
+        <li class="nav-item"><a class="nav-link" href="/contact/"><i class="fas fa-envelope d-lg-none me-1"></i> Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div class="container mt-4">
+  {% block content %}{% endblock %}
+</div>
+
+<!-- FOOTER -->
+<footer class="mt-5">
+  <p>&copy; 2025 BabyNest. All Rights Reserved.</p>
+  <p><a href="/privacy/">Privacy Policy</a> | <a href="/about/">About</a></p>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

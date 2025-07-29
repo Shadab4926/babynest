@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="bg-gradient-primary py-5" style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-8 mx-auto text-center">
+        <h1 class="display-4 fw-bold mb-3">Discover Perfect Baby Names</h1>
+        <p class="lead mb-4">Explore our curated collection of beautiful names with meanings, origins, and cultural significance</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Search Section -->
+<div class="container py-5">
+  <div class="card shadow-lg border-0 rounded-3 overflow-hidden">
+    <div class="card-body p-4">
+      <h2 class="text-center mb-4 fw-bold text-primary">🔍 Name Explorer</h2>
+      
+      <!-- Advanced Filter Bar -->
+      <form method="get" class="row g-3 align-items-center justify-content-center">
+        <div class="col-md-3">
+          <div class="input-group">
+            <span class="input-group-text bg-white border-end-0"><i class="fas fa-search"></i></span>
+            <input type="text" class="form-control border-start-0" name="q" placeholder="Search names..." value="{{ request.GET.q }}">
+          </div>
+        </div>
+        
+        <div class="col-md-2">
+          <select name="gender" class="form-select">
+            <option value="">All Genders</option>
+            <option value="Boy" {% if request.GET.gender == "Boy" %}selected{% endif %}>Boy</option>
+            <option value="Girl" {% if request.GET.gender == "Girl" %}selected{% endif %}>Girl</option>
+          </select>
+        </div>
+        
+        <div class="col-md-2">
+          <select name="starts_with" class="form-select">
+            <option value="">All Letters</option>
+            {% for letter in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" %}
+              <option value="{{ letter }}" {% if request.GET.starts_with == letter %}selected{% endif %}>{{ letter }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        
+        <div class="col-md-2">
+          <select name="religion" class="form-select">
+            <option value="">All Religions</option>
+            <option value="Islam" {% if request.GET.religion == "Islam" %}selected{% endif %}>Islam</option>
+            <option value="Hinduism" {% if request.GET.religion == "Hinduism" %}selected{% endif %}>Hinduism</option>
+            <option value="Christianity" {% if request.GET.religion == "Christianity" %}selected{% endif %}>Christianity</option>
+            <option value="Sikhism" {% if request.GET.religion == "Sikhism" %}selected{% endif %}>Sikhism</option>
+            <option value="Buddhism" {% if request.GET.religion == "Buddhism" %}selected{% endif %}>Buddhism</option>
+            <option value="Other" {% if request.GET.religion == "Other" %}selected{% endif %}>Other</option>
+          </select>
+        </div>
+        
+        <div class="col-md-2">
+          <button type="submit" class="btn btn-primary w-100 rounded-pill py-2">
+            <i class="fas fa-filter me-2"></i> Filter
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Filtered Results -->
+  {% if request.GET %}
+    <div class="mt-5">
+      {% if results %}
+        <h3 class="text-center mb-4 fw-bold">Search Results</h3>
+        <div class="row g-4">
+          {% for name in results %}
+            <div class="col-md-4">
+              <div class="card h-100 border-0 shadow-sm hover-shadow transition-all">
+                <div class="card-img-container" style="height: 220px; overflow: hidden;">
+                  {% if name.image %}
+                    <img src="{{ name.image.url }}" class="card-img-top h-100 w-100 object-fit-cover" alt="{{ name.name }}">
+                  {% else %}
+                    <img src="{% static 'images/default-baby.jpg' %}" class="card-img-top h-100 w-100 object-fit-cover" alt="Default Baby">
+                  {% endif %}
+                </div>
+                <div class="card-body text-center">
+                  <h5 class="card-title fw-bold">{{ name.name }}</h5>
+                  <p class="text-muted mb-2">{{ name.meaning|default:"Meaning not available"|truncatechars:80 }}</p>
+                  <div class="d-flex justify-content-center gap-2 mb-3">
+                    <span class="badge {% if name.gender == 'Boy' %}bg-primary{% elif name.gender == 'Girl' %}bg-pink{% else %}bg-secondary{% endif %}">
+                      {{ name.gender|default:"-" }}
+                    </span>
+                    <span class="badge bg-light text-dark">{{ name.religion|default:"-" }}</span>
+                  </div>
+                  <a href="{% url 'name_detail' name.slug %}" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                    View Details <i class="fas fa-arrow-right ms-1"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="alert alert-warning text-center py-4 rounded-3">
+          <i class="fas fa-exclamation-circle fa-2x mb-3"></i>
+          <h4 class="fw-bold">No names found</h4>
+          <p class="mb-0">Try adjusting your search filters</p>
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>
+
+<!-- All Names Table -->
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold mb-0">Complete Name Directory</h2>
+    <div class="d-flex gap-2">
+      <button class="btn btn-outline-secondary rounded-pill">
+        <i class="fas fa-download me-1"></i> Export
+      </button>
+    </div>
+  </div>
+
+  <div class="card shadow border-0 overflow-hidden">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="bg-primary text-white">
+          <tr>
+            <th class="ps-4" style="width: 80px;">Image</th>
+            <th>Name</th>
+            <th>Meaning</th>
+            <th class="text-center">Gender</th>
+            <th class="text-center">Religion</th>
+            <th class="text-center pe-4">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for name in names %}
+          <tr class="border-top">
+            <td class="ps-4">
+              <div class="avatar avatar-lg rounded-circle shadow-sm overflow-hidden">
+                {% if name.image %}
+                  <img src="{{ name.image.url }}" alt="{{ name.name }}" class="w-100 h-100 object-fit-cover">
+                {% else %}
+                  <img src="{% static 'images/default-baby.jpg' %}" alt="Default" class="w-100 h-100 object-fit-cover">
+                {% endif %}
+              </div>
+            </td>
+            <td>
+              <h6 class="mb-0 fw-bold">{{ name.name }}</h6>
+            </td>
+            <td class="text-muted">{{ name.meaning|default:"-"|truncatechars:50 }}</td>
+            <td class="text-center">
+              {% if name.gender == "Boy" %}
+                <span class="badge bg-primary-light text-primary">Boy</span>
+              {% elif name.gender == "Girl" %}
+                <span class="badge bg-pink-light text-pink">Girl</span>
+              {% else %}
+                <span class="badge bg-secondary">-</span>
+              {% endif %}
+            </td>
+            <td class="text-center">{{ name.religion|default:"-" }}</td>
+            <td class="pe-4 text-center">
+              <a href="{% url 'name_detail' name.slug %}" class="btn btn-sm btn-primary rounded-pill px-3">
+                View <i class="fas fa-chevron-right ms-1"></i>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<style>
+  .bg-pink { background-color: #ff6b9a; }
+  .bg-pink-light { background-color: rgba(255, 107, 154, 0.1); }
+  .text-pink { color: #ff6b9a; }
+  .bg-primary-light { background-color: rgba(13, 110, 253, 0.1); }
+  .hover-shadow:hover { box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); }
+  .transition-all { transition: all 0.3s ease; }
+  .object-fit-cover { object-fit: cover; }
+  .avatar { width: 50px; height: 50px; }
+</style>
+{% endblock %}

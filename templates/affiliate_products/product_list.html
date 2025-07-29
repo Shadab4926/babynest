@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Best Baby Products | {{ site_name }}{% endblock %}
+
+{% block content %}
+<section class="product-listing py-5 bg-light">
+  <div class="container">
+    <!-- Filter Header -->
+    <div class="row mb-4 align-items-center">
+      <div class="col-md-6">
+        <h1 class="h2 mb-0">Our Top Baby Picks</h1>
+      </div>
+      <div class="col-md-6 text-md-end">
+        <div class="dropdown d-inline-block me-2">
+          <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            Sort: {% if request.GET.sort %}{{ request.GET.sort|title }}{% else %}Recommended{% endif %}
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="?sort=recommended">Recommended</a></li>
+            <li><a class="dropdown-item" href="?sort=popular">Most Popular</a></li>
+            <li><a class="dropdown-item" href="?sort=price_asc">Price: Low to High</a></li>
+            <li><a class="dropdown-item" href="?sort=price_desc">Price: High to Low</a></li>
+            <li><a class="dropdown-item" href="?sort=rating">Top Rated</a></li>
+          </ul>
+        </div>
+        <div class="dropdown d-inline-block">
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            Category: {{ current_category.name|default:"All" }}
+          </button>
+          <ul class="dropdown-menu">
+            {% for cat in categories %}
+            <li><a class="dropdown-item" href="?category={{ cat.slug }}">{{ cat.name }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+      {% for product in products %}
+      <div class="col">
+        <div class="card product-card h-100 border-0 shadow-sm overflow-hidden">
+          <!-- Badges -->
+          <div class="position-absolute top-0 start-0 pt-3 ps-3">
+            {% if product.discount_percentage > 0 %}
+            <span class="badge bg-danger rounded-pill">Save {{ product.discount_percentage }}%</span>
+            {% endif %}
+            {% for badge in product.badges.all|slice:":1" %}
+            <span class="badge bg-info text-dark rounded-pill mt-1"><i class="{{ badge.icon }} me-1"></i>{{ badge.label }}</span>
+            {% endfor %}
+          </div>
+
+          <!-- Product Image -->
+          <div class="product-img-container ratio ratio-1x1 bg-light">
+  <a href="{% url 'affiliate_products:product_detail' product.id %}">
+    {% if product.image %}
+      <img src="{{ product.image.url }}" 
+           class="card-img-top p-3 object-fit-contain" 
+           alt="{{ product.title }}"
+           onerror="this.onerror=null;this.src='{% static 'images/default-product.png' %}';">
+    {% else %}
+      <div class="d-flex align-items-center justify-content-center h-100 text-muted">
+        <i class="fas fa-baby-carriage fa-4x"></i>
+      </div>
+    {% endif %}
+  </a>
+</div>
+
+
+          <!-- Card Body -->
+          <div class="card-body pt-2 pb-3">
+            <!-- Retailer Logo -->
+            {% if product.primary_retailer.logo %}
+            <img src="{{ product.primary_retailer.logo.url }}" alt="{{ product.primary_retailer.name }}" height="20" class="mb-2">
+            {% endif %}
+
+            <!-- Title -->
+            <h3 class="h6 card-title mb-1">
+              <a href="{% url 'affiliate_products:product_detail' product.id %}" class="text-dark text-decoration-none">
+  {{ product.title|truncatechars:60 }}</a>
+            </h3>
+
+            <!-- Rating -->
+            <div class="d-flex align-items-center mb-2">
+              <div class="star-rating text-warning small">
+                {% for i in "12345" %}
+                  {% if i <= product.average_rating|floatformat:"0" %}
+                  <i class="fas fa-star"></i>
+                  {% else %}
+                  <i class="far fa-star"></i>
+                  {% endif %}
+                {% endfor %}
+              </div>
+              <small class="text-muted ms-1">({{ product.reviews.count }})</small>
+            </div>
+
+            <!-- Price -->
+            <div class="d-flex align-items-center mb-3">
+              <span class="h5 mb-0 text-primary">₹{{ product.price }}</span>
+              {% if product.original_price %}
+              <small class="text-muted text-decoration-line-through ms-2">₹{{ product.original_price }}</small>
+              {% endif %}
+            </div>
+
+            <!-- CTA Button -->
+            <a href="{% url 'affiliate_products:product_detail' product.id %}" class="btn btn-primary">
+  View Details
+</a>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12">
+        <div class="alert alert-info text-center">No products found matching your criteria.</div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <nav class="mt-5">
+      <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        {% endif %}
+        
+        {% for num in page_obj.paginator.page_range %}
+          {% if page_obj.number == num %}
+          <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+          {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+          {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  .product-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(#FFF0F5) !important;
+  }
+  .product-img-container {
+    position: relative;
+    overflow: hidden;
+  }
+  .product-img-container img {
+    transition: transform 0.5s ease;
+  }
+  .product-card:hover .product-img-container img {
+    transform: scale(1.05);
+  }
+  .star-rating {
+    letter-spacing: 2px;
+  }
+</style>
+{% endblock %}
