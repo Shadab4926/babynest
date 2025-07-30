@@ -10,8 +10,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Security
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-fallback-key-for-dev-only')
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
-#ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',') if os.getenv('ALLOWED_HOSTS') else []
+host_env = os.getenv('ALLOWED_HOSTS')
+if host_env:
+    ALLOWED_HOSTS = host_env.split(',')
+else:
+    ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
 
 
 # Apps
