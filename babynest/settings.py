@@ -163,7 +163,24 @@ if not DEBUG:
 # settings.py
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 100000
 
-# block https
-SECURE_SSL_REDIRECT = True
+
+import logging
+import sys
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'stream': sys.stdout,
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
+}
 
    
