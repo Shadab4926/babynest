@@ -10,7 +10,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Security
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-fallback-key-for-dev-only')
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+#ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',') if os.getenv('ALLOWED_HOSTS') else []
+
 
 # Apps
 INSTALLED_APPS = [
@@ -155,5 +157,8 @@ if not DEBUG:
 
 # settings.py
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 100000
+
+# block https
+SECURE_SSL_REDIRECT = False
 
    

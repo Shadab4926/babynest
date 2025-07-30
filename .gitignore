@@ -1,12 +1,34 @@
+# Python
 *.pyc
 __pycache__/
+
+# DB
 db.sqlite3
 *.sqlite3
+
+# Logs
 *.log
+
+# Environment
 .env
 *.env
+
+# Virtual Environment
 venv/
+
+# IDEs
 .idea/
 .vscode/
+
+# Static and Media
 staticfiles/
 media/
+
+# MacOS
+.DS_Store
+
+# Render-specific (if any build cache gets added later)
+build/
+
+
+
