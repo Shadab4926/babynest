@@ -1,21 +1,22 @@
-from pathlib import Path
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 
-# Load environment variables
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Security
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-fallback-key-for-dev-only')
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'fallback-secret')
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
-host_env = os.getenv('ALLOWED_HOSTS')
-if host_env:
-    ALLOWED_HOSTS = host_env.split(',')
-else:
-    ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
+# Handle comma-separated ALLOWED_HOSTS from .env or Render environment variable
+default_hosts = ['127.0.0.1', 'localhost']
+env_hosts = os.getenv('ALLOWED_HOSTS')
+if env_hosts:
+    ALLOWED_HOSTS = env_hosts.split(',')
+else:
+    ALLOWED_HOSTS = default_hosts
 
 
 # Apps
