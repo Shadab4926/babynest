@@ -30,5 +30,10 @@ media/
 # Render-specific (if any build cache gets added later)
 build/
 
+#.env
+DJANGO_SECRET_KEY=4628351336807fb52448dff82a7b9b61
+DEBUG=False
+ALLOWED_HOSTS=	https://babynest-1.onrender.com,www.babynest-1.onrender
+
 
 
