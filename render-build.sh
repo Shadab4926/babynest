@@ -1,10 +1,19 @@
 #!/usr/bin/env bash
 
-# Step 1: Install all required libraries from requirements.txt
-pip install -r requirements.txt
 
-# Step 2: Django database migrate
+echo "Applying migrations..."
+python manage.py makemigrations
 python manage.py migrate
-
-# Step 3: Collect static files (CSS, JS, etc)
+echo "Collecting static files..."
 python manage.py collectstatic --noinput
+
+
+
+
+
+
+#!/usr/bin/env bash
+# render-build.sh
+
+
+
