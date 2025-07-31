@@ -6,6 +6,8 @@ python manage.py makemigrations
 python manage.py migrate
 echo "Collecting static files..."
 python manage.py collectstatic --noinput
+chmod +x render-build.sh
+
 
 
 
